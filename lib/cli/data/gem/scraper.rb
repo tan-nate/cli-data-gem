@@ -1,3 +1,7 @@
+require 'pry'
+require 'nokogiri'
+require 'open-uri'
+
 class Scraper
 
   def self.scrape_list_page
@@ -7,8 +11,7 @@ class Scraper
     beer_hashes = []
    
     beer_row = beer_list_page.css("tr")
-    binding.pry
-    
+
     # .each do |profile|
     #   profile_hash = {:name => nil, :location => nil, :profile_url => nil}
     #   profile_hash[:name] = profile.css("h4.student-name").text
@@ -51,6 +54,3 @@ class Scraper
 end
 
 binding.pry
-
-scraper = Scraper.new
-beer_hashes = scraper.scrape_list_page
