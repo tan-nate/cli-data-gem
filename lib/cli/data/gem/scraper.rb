@@ -9,16 +9,20 @@ class Scraper
     beer_list_page = Nokogiri::HTML(html)
     
     beer_hashes = []
-   
-    beer_row = beer_list_page.css("tr")
+    
+    beer_list = beer_list_page.css("tr")[2..-1]
 
-    # .each do |profile|
-    #   profile_hash = {:name => nil, :location => nil, :profile_url => nil}
-    #   profile_hash[:name] = profile.css("h4.student-name").text
-    #   profile_hash[:location] = profile.css("p.student-location").text
-    #   profile_hash[:profile_url] = profile.css("a").attribute("href").value
-    #   profiles << profile_hash
-    # end
+    beer_list.each do |beer|
+      beer_hash = {:name => nil, :brewery => nil, :style => nil, :abv => nil, :ratings => nil, :score => nil, :details_url => nil}
+      beer_hash[:name] = beer.css("td")[1].css("a")[0].text
+      beer_hash[:brewery] = 
+      beer_hash[:style] = 
+      beer_hash[:abv] =
+      beer_hash[:ratings] =
+      beer_hash[:score] =
+      beer_hash[:details_url] = beer.css("a").attribute("href").value
+      beer_hashes << beer_hash
+    end
     
     beer_hashes
   end
