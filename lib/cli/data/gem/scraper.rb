@@ -13,15 +13,18 @@ class Scraper
     beer_list = beer_list_page.css("tr")[2..-1]
 
     beer_list.each do |beer|
-      beer_hash = {:name => nil, :brewery => nil, :style => nil, :abv => nil, :ratings => nil, :score => nil, :details_url => nil}
+      beer_hash = {}
       beer_hash[:name] = beer.css("td")[1].css("a")[0].text
-      beer_hash[:brewery] = 
-      beer_hash[:style] = 
-      beer_hash[:abv] =
-      beer_hash[:ratings] =
-      beer_hash[:score] =
-      beer_hash[:details_url] = beer.css("a").attribute("href").value
+      beer_hash[:brewery] = beer.css("td")[1].css("a")[1].text
+      beer_hash[:style] = beer.css("td")[1].css("a")[2].text
+      beer_hash[:abv] = beer.css("td")[1].css("span").text.split('|')[1].strip
+      beer_hash[:ratings] = beer.css("td")[2].text
+      beer_hash[:score] = beer.css("td")[3].text
+      beer_hash[:name_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[0]["href"]}"
+      beer_hash[:brewery_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[1]["href"]}"
+      beer_hash[:style_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[2]["href"]}"
       beer_hashes << beer_hash
+      binding.pry
     end
     
     beer_hashes
