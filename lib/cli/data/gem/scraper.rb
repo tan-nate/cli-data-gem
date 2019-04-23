@@ -1,11 +1,11 @@
-require 'pry'
-require 'nokogiri'
-require 'open-uri'
+require "pry"
+require "nokogiri"
+require "open-uri"
 
 class Scraper
 
   def self.scrape_list_page
-    html = open('https://www.beeradvocate.com/lists/popular/')
+    html = open("https://www.beeradvocate.com/lists/popular/")
     beer_list_page = Nokogiri::HTML(html)
     
     beer_hashes = []
@@ -24,40 +24,33 @@ class Scraper
       beer_hash[:brewery_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[1]["href"]}"
       beer_hash[:style_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[2]["href"]}"
       beer_hashes << beer_hash
-      binding.pry
     end
     
     beer_hashes
   end
 
-  # def self.scrape_profile_page(profile_url)
-  #   html = open(profile_url)
-  #   profile_page = Nokogiri::HTML(html)
+  def self.scrape_name_page(name_url)
+    html = open(name_url)
+    name_page = Nokogiri::HTML(html)
     
-  #   user_profile = {}
-   
-  #   social_links = profile_page.css("div.social-icon-container").css("a").collect do |site|
-  #     site["href"]
-  #   end
+    info_box = name_page.css("div#info_box.break")
     
-  #   social_links.each do |social_link|
-  #     if social_link.scan(/\w+/)[1] != "www"
-  #       site = social_link.scan(/\w+/)[1].to_sym
-  #     else
-  #       site = social_link.scan(/\w+/)[2].to_sym
-  #     end
-  #     if [:twitter, :linkedin, :github].include?(site)
-  #       user_profile[site] = social_link
-  #     else
-  #       user_profile[:blog] = social_link
-  #     end
-  #   end
+    name_hash = {}
+    name_hash[:description] = info_box.text.split("\n\n")[7..-1].join("\n\n")
+  end
+  
+  def self.scrape_brewery_page(brewery_url)
+    html = open(brewery_url)
+    brewery_page = Nokogiri::HTML(html)
     
-  #   user_profile[:profile_quote] = profile_page.css("div.profile-quote").text
-  #   user_profile[:bio] = profile_page.css("div.bio-block.details-block").css("div.description-holder").text.strip
-
-  #   user_profile
-  # end
+    info_box = brewery_page.css("div#info_box.break")
+    
+    brewery_hash = {}
+    brewery_hash[:type] = info_box.text.split("\n\n")[2]
+    
+    # contact_info is too jumbled
+    contact_info = info_box.text.split("\n\n")[3]
+  end
 end
 
 binding.pry
