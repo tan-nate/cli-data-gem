@@ -4,6 +4,8 @@ require "open-uri"
 
 class Scraper
   
+  # TODO: scrape_style_page
+  
   BEER_ADVOCATE_URL = "https://www.beeradvocate.com/lists/popular/"
 
   def self.scrape_list_page
@@ -48,7 +50,6 @@ class Scraper
       name_hash[:top_reviews] << review.text
     end
     
-    # name_hash too jumbled
     name_hash
   end
   
@@ -69,6 +70,7 @@ class Scraper
     
     brewery_hash
   end
+  
 end
 
 binding.pry
