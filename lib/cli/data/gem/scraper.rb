@@ -3,9 +3,11 @@ require "nokogiri"
 require "open-uri"
 
 class Scraper
+  
+  BEER_ADVOCATE_URL = "https://www.beeradvocate.com/lists/popular/"
 
   def self.scrape_list_page
-    html = open("https://www.beeradvocate.com/lists/popular/")
+    html = open(BEER_ADVOCATE_URL)
     beer_list_page = Nokogiri::HTML(html)
     
     beer_hashes = []
@@ -20,7 +22,7 @@ class Scraper
       beer_hash[:abv] = beer.css("td")[1].css("span").text.split('|')[1].strip
       beer_hash[:ratings] = beer.css("td")[2].text
       beer_hash[:score] = beer.css("td")[3].text
-      beer_hash[:name_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[0]["href"]}"
+      beer_hash[:name_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[0]["href"]}?sort=topr&start=0"
       beer_hash[:brewery_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[1]["href"]}"
       beer_hash[:style_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[2]["href"]}"
       beer_hashes << beer_hash
@@ -34,9 +36,19 @@ class Scraper
     name_page = Nokogiri::HTML(html)
     
     info_box = name_page.css("div#info_box.break")
+    reviews = name_page.css("div#rating_fullview_content_2")
     
     name_hash = {}
     name_hash[:description] = info_box.text.split("\n\n")[7..-1].join("\n\n")
+    name_hash[:pdev] = name_page.css("span.ba-pdev").text
+    
+    name_hash[:top_reviews] = []
+    reviews.each do |review|
+      name_hash[:top_reviews] << review.text
+    end
+    
+    # name_hash too jumbled
+    name_hash
   end
   
   def self.scrape_brewery_page(brewery_url)
@@ -50,6 +62,7 @@ class Scraper
     
     # contact_info is too jumbled
     contact_info = info_box.text.split("\n\n")[3]
+    binding.pry
   end
 end
 
