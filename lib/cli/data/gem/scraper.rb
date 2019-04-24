@@ -39,11 +39,12 @@ class Scraper
     reviews = name_page.css("div#rating_fullview_content_2")
     
     name_hash = {}
-    name_hash[:description] = info_box.text.split("\n\n")[7..-1].join("\n\n")
-    name_hash[:pdev] = name_page.css("span.ba-pdev").text
+    name_hash[:description] = info_box.text.split("\n\n")[7..-1].join("\n\n").strip
+    name_hash[:pdev] = name_page.css("span.ba-pdev").text.strip
     
     name_hash[:top_reviews] = []
     reviews.each do |review|
+      review.css("br").each{|br| br.replace("\n")}
       name_hash[:top_reviews] << review.text
     end
     
@@ -56,13 +57,17 @@ class Scraper
     brewery_page = Nokogiri::HTML(html)
     
     info_box = brewery_page.css("div#info_box.break")
+    info_box.css("br").each{|br| br.replace("\n")}
+    info_array = info_box.text.split("\n\n\n\n")
+    jumbled_phone_number = info_array[2].split("\n\n")[1]
     
     brewery_hash = {}
-    brewery_hash[:type] = info_box.text.split("\n\n")[2]
+    brewery_hash[:type] = info_array[1]
+    brewery_hash[:address] = info_array[2].split("\n\n")[0]
+    brewery_hash[:phone_number] = jumbled_phone_number.split("|")[0].strip
+    brewery_hash[:website] = jumbled_phone_number.split("\n")[1].strip
     
-    # contact_info is too jumbled
-    contact_info = info_box.text.split("\n\n")[3]
-    binding.pry
+    brewery_hash
   end
 end
 
