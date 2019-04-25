@@ -71,6 +71,22 @@ class Scraper
     brewery_hash
   end
   
+  def self.scrape_style_page(style_url)
+    html = open(style_url)
+    style_page = Nokogiri::HTML(html)
+    
+    description_box_array = style_page.css("div#ba-content div").text.split("\n")
+    jumbled_details = description_box_array[2].split("|")
+    
+    style_hash = {}
+    style_hash[:description] = description_box_array[1].strip
+    style_hash[:abv] = jumbled_details[0].strip
+    style_hash[:ibu] = jumbled_details[1].strip
+    style_hash[:glassware] = jumbled_details[2].strip
+    
+    style_hash
+  end
+  
 end
 
 binding.pry
