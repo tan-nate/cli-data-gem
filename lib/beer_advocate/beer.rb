@@ -1,10 +1,10 @@
-require "pry"
-require "nokogiri"
-require "open-uri"
+# require "pry"
+# require "nokogiri"
+# require "open-uri"
 
-require_relative "./scraper.rb"
-require_relative "./brewery.rb"
-require_relative "./style.rb"
+# require_relative "./scraper.rb"
+# require_relative "./brewery.rb"
+# require_relative "./style.rb"
 
 class BeerAdvocate::Beer
   attr_accessor :name, :brewery, :style, :abv, :review_count, :score, :name_url, :brewery_url, :style_url

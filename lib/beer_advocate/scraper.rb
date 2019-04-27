@@ -1,6 +1,6 @@
-require "pry"
-require "nokogiri"
-require "open-uri"
+# require "pry"
+# require "nokogiri"
+# require "open-uri"
 
 class BeerAdvocate::Scraper
   BEER_ADVOCATE_URL = "https://www.beeradvocate.com/lists/popular/"

@@ -1,4 +1,2 @@
-module BeerAdvocate
-end
-
-require_relative '../config/environment'
+require_relative './beer_advocate/version'
+require_relative './beer_advocate/cli'
