@@ -1,4 +1,4 @@
-class Style
+class BeerAdvocate::Style
   attr_accessor :name, :beers, :style_url
   
   def initialize(name)

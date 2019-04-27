@@ -1,4 +1,4 @@
-class Brewery
+class BeerAdvocate::Brewery
   attr_accessor :name, :beers, :brewery_url
   
   def initialize(name)

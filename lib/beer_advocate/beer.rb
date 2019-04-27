@@ -6,7 +6,7 @@ require_relative "./scraper.rb"
 require_relative "./brewery.rb"
 require_relative "./style.rb"
 
-class Beer
+class BeerAdvocate::Beer
   attr_accessor :name, :brewery, :style, :abv, :review_count, :score, :name_url, :brewery_url, :style_url
   attr_reader :brewery, :style
   

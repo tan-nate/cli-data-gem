@@ -1,15 +1,13 @@
 # Cli::Data::Gem
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cli/data/gem`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem enables you to browse the Beer Advocate website (beeradvocate.com) in a CLI. 
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'cli-data-gem'
+gem 'beer-advocate-cli-gem'
 ```
 
 And then execute:
@@ -18,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install cli-data-gem
+    $ gem install beer-advocate-cli-gem
 
 ## Usage
 
@@ -37,7 +35,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/'tan_n
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Cli::Data::Gem project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/'tan_nate'/cli-data-gem/blob/master/CODE_OF_CONDUCT.md).

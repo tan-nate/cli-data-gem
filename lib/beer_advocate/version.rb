@@ -1,7 +1,3 @@
-module Cli
-  module Data
-    module Gem
-      VERSION = "0.1.0"
-    end
-  end
+module BeerAdvocate
+  VERSION = "0.2.0"
 end
