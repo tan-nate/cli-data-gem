@@ -2,22 +2,22 @@
 # require "nokogiri"
 # require "open-uri"
 
-# require_relative "./scraper.rb"
-# require_relative "./brewery.rb"
-# require_relative "./style.rb"
+require_relative "./scraper.rb"
+require_relative "./brewery.rb"
+require_relative "./style.rb"
 
 class BeerAdvocate::Beer
   attr_accessor :name, :brewery, :style, :abv, :review_count, :score, :name_url, :brewery_url, :style_url
   attr_reader :brewery, :style
   
   def brewery=(brewery)
-    new_brewery = Brewery.new(brewery)
+    new_brewery = BeerAdvocate::Brewery.new(brewery)
     @brewery = new_brewery
     new_brewery.add_beer(self)
   end
   
   def style=(style)
-    new_style = Style.new(style)
+    new_style = BeerAdvocate::Style.new(style)
     @style = new_style
     new_style.add_beer(self)
   end
@@ -39,7 +39,7 @@ class BeerAdvocate::Beer
   
   def self.create_from_collection(beers_array)
     beers_array.each do |beer_hash|
-      Beer.new(beer_hash)
+      BeerAdvocate::Beer.new(beer_hash)
     end
   end
   
@@ -48,6 +48,6 @@ class BeerAdvocate::Beer
   end
 end
 
-Beer.create_from_collection(Scraper.scrape_list_page)
+BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
 
 binding.pry
