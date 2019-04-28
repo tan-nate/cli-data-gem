@@ -1,7 +1,3 @@
-# require "pry"
-# require "nokogiri"
-# require "open-uri"
-
 require_relative "./scraper.rb"
 require_relative "./brewery.rb"
 require_relative "./style.rb"
