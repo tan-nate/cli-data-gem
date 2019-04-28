@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require '../config/environment'
+require './lib/beer_advocate'
 
 BeerAdvocate::CLI.new.call
