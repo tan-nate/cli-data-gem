@@ -1,1 +1,2 @@
-Figure out where modules go. 
+- Figure out where modules go. 
+- Format table uniformly

@@ -1,6 +1,6 @@
-require_relative "./scraper.rb"
-require_relative "./brewery.rb"
-require_relative "./style.rb"
+require_relative './scraper.rb'
+require_relative './brewery.rb'
+require_relative './style.rb'
 
 class BeerAdvocate::Beer
   attr_accessor :name, :brewery, :style, :abv, :review_count, :score, :name_url, :brewery_url, :style_url
@@ -19,11 +19,11 @@ class BeerAdvocate::Beer
   end
   
   def brewery_url=(brewery_url)
-    self.brewery.brewery_url = brewery_url
+    brewery.brewery_url = brewery_url
   end
   
   def style_url=(style_url)
-    self.style.style_url = style_url
+    style.style_url = style_url
   end
   
   @@all = []
@@ -43,7 +43,3 @@ class BeerAdvocate::Beer
     @@all
   end
 end
-
-BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-
-#binding.pry

@@ -7,6 +7,6 @@ class BeerAdvocate::Brewery
   end
   
   def add_beer(beer)
-    self.beers << beer
+    beers << beer
   end
 end
