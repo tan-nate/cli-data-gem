@@ -46,4 +46,4 @@ end
 
 BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
 
-binding.pry
+#binding.pry
