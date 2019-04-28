@@ -3,17 +3,20 @@ require_relative './scraper.rb'
 
 class BeerAdvocate::CLI
   def welcome
-    puts "Welcome to the Beer Advocate CLI! At any time, type 'menu' to return to this menu or 'back' to return to the previous page."
-    puts " 1. Browse by beer  | 2. Search by beer"
+    puts "Welcome to the Beer Advocate CLI! At any time, type 'exit' to quit the program."
+    puts " 1. Browse by beer  | 3. Search by beer"
     puts " 2. Browse by style | 4. Search by brewery"
   end
   
   def take_input
     input = gets.strip
+    input
   end
   
   def show_beers_table
     beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    puts "Type a beer name for more info."
+    
     puts "Review count | Name | Score | ABV"
     beers.each do |beer|
       puts "#{beer[:review_count]} | #{beer[:name]} | #{beer[:review_count]} | #{beer[:score]} | #{beer[:abv]}"
@@ -28,11 +31,10 @@ class BeerAdvocate::CLI
     beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
     
     puts "#{find_beer[:name]}"
-    puts "Brewery: #{find_beer[:brewery]} | Review count: #{find_beer[:review_count]}"
-    puts "Style: #{find_beer[:style]} | Score: #{find_beer[:score]}"
-    puts "ABV: #{find_beer[:abv]}"
+    puts "Brewery: #{find_beer[:brewery]} | Style: #{find_beer[:style]} | ABV: #{find_beer[:abv]}"
+    puts "Review count: #{find_beer[:review_count]} | Score: #{find_beer[:score]}"
     puts "1. Top reviews | 2. Brewery details | 3. Style details"
-    puts "Choose an option above, or type 'back' or 'menu'"
+    puts "Choose an option above. "
   end
   
   def show_styles_list
@@ -43,6 +45,7 @@ class BeerAdvocate::CLI
     styles.uniq!
     styles.sort!
     
+    puts "Choose a style below."
     styles.each do |style|
       puts "#{styles.index(style)}. #{style}"
     end
@@ -60,7 +63,7 @@ class BeerAdvocate::CLI
     puts "#{style_page_details[:abv]}"
     puts "#{style_page_details[:ibu]}"
     puts "#{style_page_details[:glassware]}"
-    puts "Press '1' for a list of beers of this style"
+    puts "Press '1' for a list of beers of this style."
   end
   
   def show_brewery(brewery)
@@ -75,6 +78,20 @@ class BeerAdvocate::CLI
     puts "#{brewery_page_details[:address]}"
     puts "#{brewery_page_details[:phone_number]}"
     puts "#{brewery_page_details[:website]}"
-    puts "Press '1' for a list of beers from this brewery"
+    puts "Press '1' for a list of beers from this brewery."
+  end
+  
+  def run
+    welcome
+    case take_input
+    when "1"
+      show_beers_table
+    when "2"
+      show_styles_list
+    when "3"
+      show_beer(take_input)
+    when "4"
+      show_brewery(take_input)
+    end
   end
 end
