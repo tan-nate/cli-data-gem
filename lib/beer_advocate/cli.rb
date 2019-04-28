@@ -20,7 +20,7 @@ class BeerAdvocate::CLI
     end
   end
   
-  def show_styles_table
+  def show_styles_list
     beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     styles = beers.collect do |beer|
       beer[:style]
@@ -30,5 +30,13 @@ class BeerAdvocate::CLI
     styles.each do |style|
       puts "#{styles.index(style)}. #{style}"
     end
+  end
+  
+  def show_beer(beer)
+    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    find_beer = beers.find do |listed_beer|
+      listed_beer[:name].downcase == beer.downcase
+    end
+    beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
   end
 end
