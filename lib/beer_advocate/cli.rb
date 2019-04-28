@@ -14,7 +14,7 @@ class BeerAdvocate::CLI
   
   def show_beers_table
     beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-    puts "Review Count | Name         | Score | ABV"
+    puts "Review count | Name | Score | ABV"
     beers.each do |beer|
       puts "#{beer[:review_count]} | #{beer[:name]} | #{beer[:review_count]} | #{beer[:score]} | #{beer[:abv]}"
     end
@@ -38,5 +38,11 @@ class BeerAdvocate::CLI
       listed_beer[:name].downcase == beer.downcase
     end
     beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
+    puts "#{find_beer[:name]}"
+    puts "Brewery: #{find_beer[:brewery]} | Review count: #{find_beer[:review_count]}"
+    puts "Style: #{find_beer[:style]} | Score: #{find_beer[:score]}"
+    puts "ABV: #{find_beer[:abv]}"
+    puts "1. Top reviews | 2. Brewery details | 3. Style details"
+    puts "Choose an option above, or type 'back' or 'menu'"
   end
 end
