@@ -62,4 +62,19 @@ class BeerAdvocate::CLI
     puts "#{style_page_details[:glassware]}"
     puts "Press '1' for a list of beers of this style"
   end
+  
+  def show_brewery(brewery)
+    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    find_brewery = beers.find do |listed_beer|
+      listed_beer[:brewery].downcase == brewery.downcase
+    end
+    brewery_page_details = BeerAdvocate::Scraper.scrape_brewery_page(find_brewery[:brewery_url])
+
+    puts "#{find_brewery[:brewery]}"
+    puts "#{brewery_page_details[:type]}"
+    puts "#{brewery_page_details[:address]}"
+    puts "#{brewery_page_details[:phone_number]}"
+    puts "#{brewery_page_details[:website]}"
+    puts "Press '1' for a list of beers from this brewery"
+  end
 end
