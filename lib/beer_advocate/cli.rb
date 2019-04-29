@@ -85,8 +85,7 @@ class BeerAdvocate::CLI
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     puts "#{find_beer[:name]}".yellow.bold
     puts " "
-    puts "Brewery: #{find_beer[:brewery]}   ||   Style: #{find_beer[:style]}   ||   ABV: #{find_beer[:abv]}".bold
-    puts "Score: #{find_beer[:score]}   ||   Review count: #{find_beer[:review_count]}".bold
+    puts "Brewery: #{find_beer[:brewery]} || Style: #{find_beer[:style]} || ABV: #{find_beer[:abv]} || Score: #{find_beer[:score]} || Review count: #{find_beer[:review_count]}".bold
     puts " "
     puts "1. Top reviews | 2. Brewery details | 3. Style details".light_blue.bold
     puts "Choose an option above.".yellow.bold
@@ -94,16 +93,16 @@ class BeerAdvocate::CLI
     case take_input
     when "1"
       reviews = beer_page_details[:top_reviews]
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       reviews.each do |review|
+        puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
         puts "#{review}"
         puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
         puts " "
       end
-      puts "Press 'M' for menu:"
+      puts "Press 'M' for menu:".yellow.bold
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       if take_input == "m"
-        welcome
+        run
       else
         exit
       end
@@ -179,6 +178,7 @@ class BeerAdvocate::CLI
       puts " "
       puts "Type beer name:".yellow.bold
       show_beer(take_input)
+      end
     end
   end
   
@@ -205,19 +205,36 @@ class BeerAdvocate::CLI
     
     case take_input
     when "1"
-      brewery_beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
-      brewery_beer_names = brewery_beers.collect {|beer| beer.name}
-      brewery_beer_names.uniq!
-      puts "- - - - - - - - - - - - - - - - -".light_blue
-      brewery_beer_names.each do |beer|
-        puts "#{beer}"
-        puts " "
-      end
-      puts "- - - - - - - - - - - - - - - - -".light_blue
+      beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
+      
+      green_beer = "Name".green.bold
+      interlude = " | "
+      bold_style = "Style".red.bold
+      the_rest = " | "
+      abv = "ABV".bold
+      complete_beer = green_beer << " | " << interlude << bold_style << the_rest << abv
+      
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts "Type a beer name for more info.".yellow.bold
       puts " "
-      puts "Type beer name:".bold
-      show_beer(take_input)
-    end
+      puts complete_beer
+      puts " "
+      # binding.pry
+      beers.collect! do |beer|
+        green_beer1 = "#{beer.name}".green.bold
+        interlude1 = " | "
+        bold_style1 = "#{beer.style.name}".red.bold
+        rest1 = " | "
+        abv1 = "#{beer.abv}".bold
+        complete_beer1 = green_beer1 << interlude1 << bold_style1 << rest1 << abv1
+        complete_beer1
+      end
+      puts " "
+      puts beers
+      puts " "
+      puts "Type a beer name for more info.".yellow.bold
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      end
   end
   
   def beer_table_interaction
