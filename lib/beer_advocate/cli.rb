@@ -6,7 +6,7 @@ class BeerAdvocate::CLI
   def welcome
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     beer_advocate_cli_text = "Beer Advocate CLI".green.bold
-    puts("Welcome to the ".yellow << beer_advocate_cli_text << "! At any time, type 'exit' to quit the program.".yellow)
+    puts("Welcome to the ".yellow << beer_advocate_cli_text << "! At any time, type 'exit' to quit the program, or 'menu' to return to this menu.".yellow)
     puts " "
     puts " 1. Browse by beer  || 3. Search by beer"
     puts " 2. Browse by style || 4. Search by brewery"
@@ -20,6 +20,8 @@ class BeerAdvocate::CLI
       puts "Goodbye!"
       puts " - - - - - - - - - - -".light_blue
       exit
+    elsif input == "menu"
+      run
     else
       input
     end
@@ -44,6 +46,8 @@ class BeerAdvocate::CLI
       beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
     when "5"
       beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
+    else
+      exit
     end
     
     green_beer = "Name".green.bold
@@ -80,6 +84,9 @@ class BeerAdvocate::CLI
     find_beer = beers.find do |listed_beer|
       listed_beer[:name].downcase == beer.downcase
     end
+    if find_beer == nil
+      exit
+    end
     beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
     
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
@@ -99,13 +106,9 @@ class BeerAdvocate::CLI
         puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
         puts " "
       end
-      puts "Press 'M' for menu:".yellow.bold
+      puts "Type 'menu':".yellow.bold
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      if take_input == "m"
-        run
-      else
-        exit
-      end
+      take_input
     when "2"
       show_brewery(find_beer[:brewery])
     when "3"
@@ -144,6 +147,9 @@ class BeerAdvocate::CLI
     find_style = beers.find do |listed_beer|
       listed_beer[:style].downcase == style.downcase
     end
+    if find_style == nil
+      exit
+    end
     style_page_details = BeerAdvocate::Scraper.scrape_style_page(find_style[:style_url])
     
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
@@ -170,7 +176,7 @@ class BeerAdvocate::CLI
       complete_beer = green_beer << interlude << bold_brewery << the_rest << abv
       
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      puts "#{find_style[:brewery]}".bold
+      puts "#{find_style[:style]}".bold
       puts " "
       puts "Type a beer name for more info.".yellow.bold
       puts complete_beer
@@ -202,6 +208,9 @@ class BeerAdvocate::CLI
     beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     find_brewery = beers.find do |listed_beer|
       listed_beer[:brewery].downcase == brewery.downcase
+    end
+    if find_brewery == nil
+      exit
     end
     brewery_page_details = BeerAdvocate::Scraper.scrape_brewery_page(find_brewery[:brewery_url])
     
@@ -280,6 +289,12 @@ class BeerAdvocate::CLI
       puts ""
       puts "Type brewery name:".bold
       show_brewery(take_input)
+    end
+  end
+  
+  class InputError < StandardError
+    def message
+      "Sorry, input invalid."
     end
   end
 end
