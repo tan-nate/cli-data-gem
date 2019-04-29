@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-bundler/setup
+require 'bundler/setup'
 require './lib/beer_advocate'
 
 BeerAdvocate::CLI.new.run
