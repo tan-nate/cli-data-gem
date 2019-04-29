@@ -88,14 +88,9 @@ class BeerAdvocate::CLI
         puts " "
       end
     when "2"
-      brewery_beers = BeerAdvocate::Brewery.find_brewery(find_beer[:brewery]).beers
-      brewery_beers.each do |beer|
-        puts "- - - - - - - - - -".light_blue
-        puts "#{brewery_beers.index(beer) + 1}. #{beer.name}"
-        puts "- - - - - - - - - -".light_blue
-      end
+      show_brewery(find_beer[:brewery])
     when "3"
-      show_style(take_input)
+      show_style(find_beer[:style])
     end
   end
   
@@ -151,10 +146,12 @@ class BeerAdvocate::CLI
     
     case take_input
     when "1"
-      puts "- - - - - - - - - - - - - - -".light_blue
-      puts "#{find_brewery[:brewery]}".yellow.bold
-      puts " "
-      puts "#{BeerAdvocate::Brewery}"
+      brewery_beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
+      brewery_beers.uniq!
+      brewery_beers.each do |beer|
+        puts "- - - - - - - - - -".light_blue
+        puts "#{brewery_beers.index(beer) + 1}. #{beer.name}"
+      end
     end
   end
   
