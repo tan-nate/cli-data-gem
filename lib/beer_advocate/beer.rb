@@ -42,4 +42,18 @@ class BeerAdvocate::Beer
   def self.all
     @@all
   end
+  
+  def self.find_beer(beer_hash)
+    self.all.find {|beer| beer.name == beer_hash[:name] && beer.brewery == beer_hash[:brewery]}
+  end
+  
+  def self.find_or_create_from_collection(beers_array)
+    beers_array.each do |beer_hash|
+      if self.find_beer(beer_hash) == nil
+        self.new(beer_hash)
+      else
+        self.find_beer(beer_hash)
+      end
+    end
+  end
 end
