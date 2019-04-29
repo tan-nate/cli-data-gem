@@ -5,8 +5,8 @@ require_relative './brewery.rb'
 class BeerAdvocate::CLI
   def welcome
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-    beer_advocate_cli_text = "Beer Advocate CLI".green.bold
-    puts("Welcome to the ".yellow << beer_advocate_cli_text << "! At any time, type 'exit' to quit the program, or 'menu' to return to this menu.".yellow)
+    beer_advocate_cli_text = "Beer Advocate CLI".yellow.bold
+    puts("Welcome to the " << beer_advocate_cli_text << "! At any time, type 'exit' to quit the program, or 'menu' to return to this menu.")
     puts " "
     puts " 1. Browse by beer  || 3. Search by beer"
     puts " 2. Browse by style || 4. Search by brewery"
@@ -171,9 +171,9 @@ class BeerAdvocate::CLI
       green_beer = "Name".green.bold
       interlude = " | "
       bold_brewery = "Brewery".red.bold
-      the_rest = " | "
       abv = "ABV".bold
-      complete_beer = green_beer << interlude << bold_brewery << the_rest << abv
+      score = "Score".yellow.bold
+      complete_beer = green_beer << interlude << bold_brewery << interlude << abv << interlude << score
       
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       puts "#{find_style[:style]}".bold
@@ -186,9 +186,9 @@ class BeerAdvocate::CLI
         green_beer1 = "#{beer.name}".green.bold
         interlude1 = " | "
         bold_brewery1 = "#{beer.brewery.name}".red.bold
-        rest1 = " | "
         abv1 = "#{beer.abv}".bold
-        complete_beer1 = green_beer1 << interlude1 << bold_brewery1 << rest1 << abv1
+        score1 = "#{beer.score}".yellow.bold
+        complete_beer1 = green_beer1 << interlude1 << bold_brewery1 << interlude1 << abv1 << interlude1 << score1
         complete_beer1
       end
       beers.uniq!.sort!
@@ -235,9 +235,9 @@ class BeerAdvocate::CLI
       green_beer = "Name".green.bold
       interlude = " | "
       bold_style = "Style".red.bold
-      the_rest = " | "
       abv = "ABV".bold
-      complete_beer = green_beer << interlude << bold_style << the_rest << abv
+      score = "Score".yellow.bold
+      complete_beer = green_beer << interlude << bold_style << interlude << abv << interlude << score
       
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       puts "#{find_brewery[:brewery]}".bold
@@ -250,9 +250,9 @@ class BeerAdvocate::CLI
         green_beer1 = "#{beer.name}".green.bold
         interlude1 = " | "
         bold_style1 = "#{beer.style.name}".red.bold
-        rest1 = " | "
         abv1 = "#{beer.abv}".bold
-        complete_beer1 = green_beer1 << interlude1 << bold_style1 << rest1 << abv1
+        score1 = "#{beer.score}".yellow.bold
+        complete_beer1 = green_beer1 << interlude1 << bold_style1 << interlude1 << abv1 << interlude1 << score1
         complete_beer1
       end
       beers.uniq!.sort!
