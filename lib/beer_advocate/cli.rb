@@ -35,15 +35,15 @@ class BeerAdvocate::CLI
     
     case take_input
     when "1"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
+      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
     when "2"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
+      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
     when "3"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
+      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
     when "4"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
+      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
     when "5"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
+      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
     end
     
     green_beer = "Name".green.bold
@@ -76,7 +76,7 @@ class BeerAdvocate::CLI
     
   
   def show_beer(beer)
-    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     find_beer = beers.find do |listed_beer|
       listed_beer[:name].downcase == beer.downcase
     end
@@ -114,7 +114,7 @@ class BeerAdvocate::CLI
   end
   
   def show_styles_list
-    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     styles = beers.collect do |beer|
       beer[:style]
     end
@@ -140,7 +140,7 @@ class BeerAdvocate::CLI
   end
   
   def show_style(style)
-    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     find_style = beers.find do |listed_beer|
       listed_beer[:style].downcase == style.downcase
     end
@@ -199,7 +199,7 @@ class BeerAdvocate::CLI
   end
   
   def show_brewery(brewery)
-    beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     find_brewery = beers.find do |listed_beer|
       listed_beer[:brewery].downcase == brewery.downcase
     end
