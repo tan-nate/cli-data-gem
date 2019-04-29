@@ -20,7 +20,16 @@ Or install it yourself as:
 
 ## Usage
 
-If using the Mac Terminal app, type 'chmod +x beer-advocate'
+If using the Mac Terminal app, type:
+
+brew update
+brew install ruby
+
+# If you use bash
+echo 'export PATH=/usr/local/Cellar/ruby/2.4.1_1/bin:$PATH' >> ~/.bash_profile 
+
+# If you use ZSH:
+echo 'export PATH=/usr/local/Cellar/ruby/2.4.1_1/bin:$PATH' >> ~/.zprofile
 
 To run the CLI, simply type 'beer-advocate'. 
 
