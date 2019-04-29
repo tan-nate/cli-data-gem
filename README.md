@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Usage instructions
+To run the CLI, simply type 'beer-advocate'. 
 
 ## Development
 
