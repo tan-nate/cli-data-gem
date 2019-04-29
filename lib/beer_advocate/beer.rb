@@ -7,13 +7,13 @@ class BeerAdvocate::Beer
   attr_reader :brewery, :style
   
   def brewery=(brewery)
-    new_brewery = BeerAdvocate::Brewery.new(brewery)
+    new_brewery = BeerAdvocate::Brewery.find_or_create(brewery)
     @brewery = new_brewery
     new_brewery.add_beer(self)
   end
   
   def style=(style)
-    new_style = BeerAdvocate::Style.new(style)
+    new_style = BeerAdvocate::Style.find_or_create(style)
     @style = new_style
     new_style.add_beer(self)
   end

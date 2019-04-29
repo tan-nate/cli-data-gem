@@ -1,5 +1,6 @@
 require_relative './beer.rb'
 require_relative './scraper.rb'
+require_relative './brewery.rb'
 
 class BeerAdvocate::CLI
   def welcome
@@ -87,7 +88,12 @@ class BeerAdvocate::CLI
         puts " "
       end
     when "2"
-      show_brewery(find_beer[:brewery])
+      brewery_beers = BeerAdvocate::Brewery.find_brewery(find_beer[:brewery]).beers
+      brewery_beers.each do |beer|
+        puts "- - - - - - - - - -".light_blue
+        puts "#{brewery_beers.index(beer) + 1}. #{beer.name}"
+        puts "- - - - - - - - - -".light_blue
+      end
     when "3"
       show_style(take_input)
     end
