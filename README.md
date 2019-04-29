@@ -20,6 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
+If using the Mac Terminal app, type 'chmod +x beer-advocate'
+
 To run the CLI, simply type 'beer-advocate'. 
 
 Video walkthrough: https://www.youtube.com/watch?v=0gne-y8op7k&t=2s
