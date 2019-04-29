@@ -1,6 +1,4 @@
-- Figure out where modules go. 
-- Format table uniformly
-- Colorize
+- list of beers in style doesn't work
 
 Improvements
 - Add 'back' and 'menu' function
