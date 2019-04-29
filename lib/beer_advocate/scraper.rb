@@ -40,8 +40,12 @@ class BeerAdvocate::Scraper
     name_hash[:top_reviews] = []
     reviews.each do |review|
       review.css("br").each{|br| br.replace("\n")}
-      name_hash[:top_reviews] << review.text
+      review_text = review.text.split("\n\n")[1]
+      name_hash[:top_reviews] << review_text
     end
+    
+    name_hash[:top_reviews] = name_hash[:top_reviews][1..9]
+    name_hash[:top_reviews].delete_if {|review| review.length < 40}
     
     name_hash
   end
