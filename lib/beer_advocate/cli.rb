@@ -13,12 +13,12 @@ class BeerAdvocate::CLI
   end
   
   def take_input
-    input = gets.strip
+    input = gets.strip.downcase
     if input == "exit"
       puts " - - - - - - - - - - -".light_blue
       puts "Goodbye!"
       puts " - - - - - - - - - - -".light_blue
-      input
+      exit
     else
       input
     end
@@ -32,47 +32,46 @@ class BeerAdvocate::CLI
     puts "1. 1-50 | 2. 51-100 | 3. 101-150 | 4. 151-200 | 5. 201-250"
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
-    loop do
-      case take_input
-      when "1"
-        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
-        break
-      when "2"
-        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
-        break
-      when "3"
-        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
-        break
-      when "4"
-        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
-        break
-      when "5"
-        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
-        break
-      when "exit"
-        #beers = nil
-        break
-      else 
-        puts " "
-        puts "Invalid input. Please try again:".bold
-      end
+    case take_input
+    when "1"
+      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
+    when "2"
+      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
+    when "3"
+      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
+    when "4"
+      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
+    when "5"
+      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
     end
     
-    if beers
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      puts "Type a beer name for more info.".yellow.bold
+    green_beer = "Name".green.bold
+    blue_brewery = "Brewery".light_blue.bold
+    abv = abv = " | ABV | "
+    bold_rating = "Score /5".red.bold
+    the_rest = " | Review count"
+    complete_beer = green_beer << " | " << blue_brewery << abv << bold_rating << the_rest
+    
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+    puts "Type a beer name for more info.".yellow.bold
+    puts " "
+    puts complete_beer
+    puts " "
+    beers.each do |beer|
+      green_beer1 = "#{beer[:name]}".green.bold
+      blue_brewery1 = "#{beer[:brewery]}".light_blue.bold
+      abv1 = " | #{beer[:abv]} | "
+      bold_rating1 = "#{beer[:score]}".red.bold
+      rest1 = " | #{beer[:review_count]}"
+      complete_beer1 = green_beer1 << " | " << blue_brewery1 << abv1 << bold_rating1 << rest1
       puts " "
-      puts "Name | ABV | Score | Review count".bold
-      puts " "
-      beers.each do |beer|
-        puts "#{beer[:name]} | #{beer[:abv]} | #{beer[:score]} | #{beer[:review_count]}"
-      end
-      puts " "
-      puts "Name | ABV | Score | Review count".bold
-      puts " "
-      puts "Type a beer name for more info.".yellow.bold
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts complete_beer1
     end
+    puts " "
+    puts complete_beer
+    puts " "
+    puts "Type a beer name for more info.".yellow.bold
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
   end
     
   
@@ -96,12 +95,17 @@ class BeerAdvocate::CLI
     when "1"
       reviews = beer_page_details[:top_reviews]
       puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      puts " "
       reviews.each do |review|
         puts "#{review}"
+        puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
         puts " "
-        puts "- - - - - - - - - - - - - - - - - - - - ".light_blue
-        puts " "
+      end
+      puts "Press 'M' for menu:"
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      if take_input == "m"
+        welcome
+      else
+        exit
       end
     when "2"
       show_brewery(find_beer[:brewery])
@@ -119,16 +123,21 @@ class BeerAdvocate::CLI
     styles.sort!
     
     puts "- - - - - - - - - - - - - - - - -".light_blue
-    puts "Choose a style below.".yellow.bold
+    puts "Type a style number:".yellow.bold
     puts " "
     styles.each do |style|
       puts "#{styles.index(style) + 1}. #{style}"
     end
     puts " "
-    puts "Choose a style above.".yellow.bold
+    puts "Type a style number:".yellow.bold
     puts "- - - - - - - - - - - - - - - - -".light_blue
     
-    show_style(styles[take_input.to_i - 1])
+    numerized_input = take_input.to_i
+    if numerized_input == 0
+      exit
+    else 
+      show_style(styles[numerized_input - 1])
+    end
   end
   
   def show_style(style)
@@ -154,15 +163,22 @@ class BeerAdvocate::CLI
     when "1"
       style_beers = BeerAdvocate::Style.find_style(find_style[:style]).beers
       style_beer_names = style_beers.collect {|beer| beer.name}
-      style_beer_names.uniq!
+      style_beer_names = style_beer_names.bold
       style_beer_breweries = style_beers.collect {|beer| beer.brewery.name}
-      style_beer_breweries.uniq!
+      style_beers_uniq = [] 
+      style_beer_names.each do |name|
+        style_beers_uniq << "#{name} - #{style_beer_breweries[style_beer_names.index(name)]}"
+      end
+      style_beers_uniq.uniq!
       
       puts "- - - - - - - - - - - - -".light_blue
-      style_beer_names.each do |beer|
-        puts "#{beer} - #{style_beer_breweries[style_beer_names.index(beer)]}"
-      end
+      style_beers_uniq.each do |beer|
+        puts "#{beer}"
+        puts " "
       puts "- - - - - - - - - - - - -".light_blue
+      puts " "
+      puts "Type beer name:".yellow.bold
+      show_beer(take_input)
     end
   end
   
@@ -192,10 +208,15 @@ class BeerAdvocate::CLI
       brewery_beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
       brewery_beer_names = brewery_beers.collect {|beer| beer.name}
       brewery_beer_names.uniq!
+      puts "- - - - - - - - - - - - - - - - -".light_blue
       brewery_beer_names.each do |beer|
-        puts "- - - - - - - - - -".light_blue
-        puts "| #{beer}".light_blue
+        puts "#{beer}"
+        puts " "
       end
+      puts "- - - - - - - - - - - - - - - - -".light_blue
+      puts " "
+      puts "Type beer name:".bold
+      show_beer(take_input)
     end
   end
   
@@ -212,8 +233,12 @@ class BeerAdvocate::CLI
     when "2"
       show_styles_list
     when "3"
+      puts ""
+      puts "Type beer name:".bold
       show_beer(take_input)
     when "4"
+      puts ""
+      puts "Type brewery name:".bold
       show_brewery(take_input)
     end
   end
