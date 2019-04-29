@@ -18,6 +18,7 @@ class BeerAdvocate::CLI
       puts " - - - - - - - - - - -".light_blue
       puts "Goodbye!"
       puts " - - - - - - - - - - -".light_blue
+      input
     else
       input
     end
@@ -31,32 +32,47 @@ class BeerAdvocate::CLI
     puts "1. 1-50 | 2. 51-100 | 3. 101-150 | 4. 151-200 | 5. 201-250"
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
-    case take_input
-    when "1"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
-    when "2"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
-    when "3"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
-    when "4"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
-    when "5"
-      beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
+    loop do
+      case take_input
+      when "1"
+        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
+        break
+      when "2"
+        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
+        break
+      when "3"
+        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
+        break
+      when "4"
+        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
+        break
+      when "5"
+        beers = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
+        break
+      when "exit"
+        #beers = nil
+        break
+      else 
+        puts " "
+        puts "Invalid input. Please try again:".bold
+      end
     end
     
-    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-    puts "Type a beer name for more info.".yellow.bold
-    puts " "
-    puts "Name | ABV | Score | Review count".bold
-    puts " "
-    beers.each do |beer|
-      puts "#{beer[:name]} | #{beer[:abv]} | #{beer[:score]} | #{beer[:review_count]}"
+    if beers
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts "Type a beer name for more info.".yellow.bold
+      puts " "
+      puts "Name | ABV | Score | Review count".bold
+      puts " "
+      beers.each do |beer|
+        puts "#{beer[:name]} | #{beer[:abv]} | #{beer[:score]} | #{beer[:review_count]}"
+      end
+      puts " "
+      puts "Name | ABV | Score | Review count".bold
+      puts " "
+      puts "Type a beer name for more info.".yellow.bold
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     end
-    puts " "
-    puts "Name | ABV | Score | Review count".bold
-    puts " "
-    puts "Type a beer name for more info.".yellow.bold
-    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
   end
     
   
@@ -102,10 +118,17 @@ class BeerAdvocate::CLI
     styles.uniq!
     styles.sort!
     
-    puts "Choose a style below."
+    puts "- - - - - - - - - - - - - - - - -".light_blue
+    puts "Choose a style below.".yellow.bold
+    puts " "
     styles.each do |style|
-      puts "#{styles.index(style)}. #{style}"
+      puts "#{styles.index(style) + 1}. #{style}"
     end
+    puts " "
+    puts "Choose a style above.".yellow.bold
+    puts "- - - - - - - - - - - - - - - - -".light_blue
+    
+    show_style(styles[take_input.to_i - 1])
   end
   
   def show_style(style)
@@ -114,13 +137,33 @@ class BeerAdvocate::CLI
       listed_beer[:style].downcase == style.downcase
     end
     style_page_details = BeerAdvocate::Scraper.scrape_style_page(find_style[:style_url])
-
-    puts "#{find_style[:style]}"
-    puts "Description: #{style_page_details[:description]}"
-    puts "#{style_page_details[:abv]}"
-    puts "#{style_page_details[:ibu]}"
-    puts "#{style_page_details[:glassware]}"
-    puts "Press '1' for a list of beers of this style."
+    
+    puts "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
+    puts "#{find_style[:style]}".yellow.bold
+    puts " "
+    puts "#{style_page_details[:description]}"
+    puts " "
+    puts "#{style_page_details[:abv]}".bold
+    puts "#{style_page_details[:ibu]}".bold
+    puts "#{style_page_details[:glassware]}".bold
+    puts " "
+    puts "Press '1' for a list of beers of this style.".yellow.bold
+    puts "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
+    
+    case take_input
+    when "1"
+      style_beers = BeerAdvocate::Style.find_style(find_style[:style]).beers
+      style_beer_names = style_beers.collect {|beer| beer.name}
+      style_beer_names.uniq!
+      style_beer_breweries = style_beers.collect {|beer| beer.brewery.name}
+      style_beer_breweries.uniq!
+      
+      puts "- - - - - - - - - - - - -".light_blue
+      style_beer_names.each do |beer|
+        puts "#{beer} - #{style_beer_breweries[style_beer_names.index(beer)]}"
+      end
+      puts "- - - - - - - - - - - - -".light_blue
+    end
   end
   
   def show_brewery(brewery)
@@ -147,10 +190,11 @@ class BeerAdvocate::CLI
     case take_input
     when "1"
       brewery_beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
-      brewery_beers.uniq!
-      brewery_beers.each do |beer|
+      brewery_beer_names = brewery_beers.collect {|beer| beer.name}
+      brewery_beer_names.uniq!
+      brewery_beer_names.each do |beer|
         puts "- - - - - - - - - -".light_blue
-        puts "#{brewery_beers.index(beer) + 1}. #{beer.name}"
+        puts "| #{beer}".light_blue
       end
     end
   end
@@ -168,14 +212,8 @@ class BeerAdvocate::CLI
     when "2"
       show_styles_list
     when "3"
-      until show_beer(take_input)
-        puts "Invalid input; try again:"
-      end
       show_beer(take_input)
     when "4"
-      until show_brewery(take_input)
-        puts "Invalid input; try again:"
-      end
       show_brewery(take_input)
     end
   end
