@@ -4,26 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "beer_advocate/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "beer-advocate-cli-gem"
+  spec.name          = "beer-advocate-cli"
   spec.version       = BeerAdvocate::VERSION
-  spec.authors       = ["'Nate Tan'"]
-  spec.email         = ["'nktan93@gmail.com'"]
+  spec.authors       = ["Nate Tan"]
+  spec.email         = "nktan93@gmail.com"
 
-  spec.summary       = %q{"CLI for Beer Advocate website."}
+  spec.summary       = "A CLI for the Beer Advocate website (beeradvocate.com)."
   spec.homepage      = "https://github.com/tan-nate/beer-advocate-cli-gem.git"
   spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = 'http://mygemserver.com'
-
-    spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/tan-nate/beer-advocate-cli-gem.git"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
