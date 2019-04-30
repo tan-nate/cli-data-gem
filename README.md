@@ -30,7 +30,7 @@ brew install ruby
 
 sudo gem install beer-advocate-cli -n /usr/local/bin
 
-cd bin/
+cd -n /usr/local/bin
 
 chmod +x beer-advocate
 
