@@ -20,9 +20,11 @@ Or install it yourself as:
 
 ## Usage
 
-If using the Mac Terminal app, ensure Xcode is installed. Then type:
+If using the Mac Terminal app, ensure Xcode is installed:
 
 xcode-select --install
+
+Then type:
 
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
