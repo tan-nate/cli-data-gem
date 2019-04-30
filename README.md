@@ -23,8 +23,11 @@ Or install it yourself as:
 If using the Mac Terminal app, ensure Xcode is installed. Then type:
 
 xcode-select --install
+
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 brew install ruby
+
 sudo gem install beer-advocate-cli
 
 To run the CLI, simply type 'beer-advocate'. 
