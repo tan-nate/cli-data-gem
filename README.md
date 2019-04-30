@@ -30,6 +30,10 @@ brew install ruby
 
 sudo gem install beer-advocate-cli -n /usr/local/bin
 
+cd bin/
+
+chmod +x beer-advocate
+
 To run the CLI, simply type 'beer-advocate'. 
 
 Video walkthrough: https://www.youtube.com/watch?v=0gne-y8op7k&t=2s
