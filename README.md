@@ -28,7 +28,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 brew install ruby
 
-sudo gem install beer-advocate-cli
+sudo gem install beer-advocate-cli -n /usr/local/bin
 
 To run the CLI, simply type 'beer-advocate'. 
 
