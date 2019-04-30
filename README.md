@@ -20,6 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
+* ~ Mac Terminal installation not working...any input highly appreciated... ~ *
+
 If using the Mac Terminal app, ensure Xcode is installed:
 
 xcode-select --install
@@ -31,6 +33,8 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 brew install ruby
 
 sudo gem install beer-advocate-cli -n /usr/local/bin
+
+* ~ ~ *
 
 To run the CLI, simply type 'beer-advocate'. 
 
