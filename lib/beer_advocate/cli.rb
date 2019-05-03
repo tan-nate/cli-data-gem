@@ -3,6 +3,10 @@ require_relative './scraper.rb'
 require_relative './brewery.rb'
 
 class BeerAdvocate::CLI
+  def initialize
+    BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+  end
+  
   def welcome
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     beer_advocate_cli_text = "Beer Advocate CLI".yellow.bold
@@ -47,7 +51,8 @@ class BeerAdvocate::CLI
     when "5"
       beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
     else
-      exit
+      puts "Please enter a number 1-5:"
+      take_input
     end
     
     green_beer = "Name".green.bold
@@ -274,7 +279,6 @@ class BeerAdvocate::CLI
   end
   
   def run
-    BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
     welcome
     case take_input
     when "1"
@@ -289,6 +293,9 @@ class BeerAdvocate::CLI
       puts ""
       puts "Type brewery name:".bold
       show_brewery(take_input)
+    else
+      puts "Type 1-4:"
+      run
     end
   end
   

@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    beer-advocate-cli (0.1.1)
+    beer-advocate-cli (0.1.4)
       colorize (~> 0.8.1)
-      nokogiri (~> 1.10.3)
+      nokogiri (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
