@@ -67,7 +67,7 @@ class BeerAdvocate::CLI
     green_beer = "Name".green.bold
     blue_brewery = "Brewery".light_blue.bold
     abv = abv = " | ABV | "
-    bold_rating = "Score /5".red.bold
+    bold_rating = "Score".red.bold
     the_rest = " | Review count"
     complete_beer = green_beer << " | " << blue_brewery << abv << bold_rating << the_rest
     
@@ -133,7 +133,11 @@ class BeerAdvocate::CLI
       show_beer(take_input)
     end
     
-    beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
+    if BeerAdvocate::Scraper.find_url(find_beer[:name_url]) == nil
+      beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
+    else
+      beer_page_details = BeerAdvocate::Scraper.find_url_details(find_beer[:name_url])
+    end
     @reviews = beer_page_details[:top_reviews]
     
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
@@ -224,14 +228,15 @@ class BeerAdvocate::CLI
   end
   
   def show_style(style)
-    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-    @find_style = beers.find do |listed_beer|
+    @find_style = beer_list.find do |listed_beer|
       listed_beer[:style].downcase == style.downcase
     end
-    if find_style == nil
-      exit
+    
+    if BeerAdvocate::Scraper.find_url(find_style[:style_url]) == nil
+      style_page_details = BeerAdvocate::Scraper.scrape_style_page(find_style[:style_url])
+    else
+      style_page_details = BeerAdvocate::Scraper.find_url_details(find_style[:style_url])
     end
-    style_page_details = BeerAdvocate::Scraper.scrape_style_page(find_style[:style_url])
     
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
     puts "#{find_style[:style]}".yellow.bold
@@ -302,7 +307,13 @@ class BeerAdvocate::CLI
       show_brewery(take_input)
     end
     
-    brewery_page_details = BeerAdvocate::Scraper.scrape_brewery_page(find_brewery[:brewery_url])
+    if BeerAdvocate::Scraper.find_url(find_brewery[:brewery_url]) == nil
+      brewery_page_details = BeerAdvocate::Scraper.scrape_brewery_page(find_brewery[:brewery_url])
+    else
+      brewery_page_details = BeerAdvocate::Scraper.find_url_details(find_brewery[:brewery_url])
+    end
+    
+    #binding.pry
     
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
     puts "#{find_brewery[:brewery]}".yellow.bold

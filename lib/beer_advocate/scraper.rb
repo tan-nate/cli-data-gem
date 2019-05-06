@@ -8,7 +8,16 @@ class BeerAdvocate::Scraper
   end
   
   def self.find_url(url)
-    self.scraped_urls.find {|scraped_url| scraped_url == url}
+    self.scraped_urls.find do |scraped_url_hash| 
+      scraped_url_hash.keys.to_s.split('"')[1] == url
+    end
+  end
+  
+  def self.find_url_details(url)
+    found_url = self.scraped_urls.find do |scraped_url_hash| 
+      scraped_url_hash.keys.to_s.split('"')[1] == url
+    end
+    found_url[url.to_sym]
   end
 
   def self.scrape_list_page
@@ -61,6 +70,10 @@ class BeerAdvocate::Scraper
     name_hash[:top_reviews] = name_hash[:top_reviews][1..9]
     name_hash[:top_reviews].delete_if {|review| review.length < 40}
     
+    scraped_url_hash = {}
+    scraped_url_hash[name_url.to_sym] = name_hash
+    self.scraped_urls << scraped_url_hash
+    
     name_hash
   end
   
@@ -81,6 +94,10 @@ class BeerAdvocate::Scraper
     brewery_hash[:phone_number] = jumbled_phone_number.split("|")[0].strip
     brewery_hash[:website] = jumbled_phone_number.split("\n")[1].strip
     
+    scraped_url_hash = {}
+    scraped_url_hash[brewery_url.to_sym] = brewery_hash
+    self.scraped_urls << scraped_url_hash
+    
     brewery_hash
   end
   
@@ -98,6 +115,10 @@ class BeerAdvocate::Scraper
     style_hash[:abv] = jumbled_details[0].strip
     style_hash[:ibu] = jumbled_details[1].strip
     style_hash[:glassware] = jumbled_details[2].strip
+    
+    scraped_url_hash = {}
+    scraped_url_hash[style_url.to_sym] = style_hash
+    self.scraped_urls << scraped_url_hash
     
     style_hash
   end
