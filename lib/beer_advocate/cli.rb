@@ -1,9 +1,3 @@
-require 'pry'
-
-require_relative './beer.rb'
-require_relative './scraper.rb'
-require_relative './brewery.rb'
-
 class BeerAdvocate::CLI
   attr_accessor :beer_list, :beers, :styles, :reviews, :find_beer, :find_brewery, :find_style
   
@@ -312,8 +306,6 @@ class BeerAdvocate::CLI
     else
       brewery_page_details = BeerAdvocate::Scraper.find_url_details(find_brewery[:brewery_url])
     end
-    
-    #binding.pry
     
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
     puts "#{find_brewery[:brewery]}".yellow.bold
