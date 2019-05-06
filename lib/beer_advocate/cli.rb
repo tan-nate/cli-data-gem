@@ -1,10 +1,14 @@
+require 'pry'
+
 require_relative './beer.rb'
 require_relative './scraper.rb'
 require_relative './brewery.rb'
 
 class BeerAdvocate::CLI
+  attr_accessor :beer_list, :beers, :styles
+  
   def initialize
-    BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
+    @beer_list = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
   end
   
   def welcome
@@ -31,6 +35,25 @@ class BeerAdvocate::CLI
     end
   end
   
+  def show_beers_table_input
+    case take_input
+    when "1"
+      @beers = @beer_list[0..49]
+    when "2"
+      @beers = @beer_list[50..99]
+    when "3"
+      @beers = @beer_list[100..149]
+    when "4"
+      @beers = @beer_list[150..199]
+    when "5"
+      @beers = @beer_list[200..249]
+    else
+      puts ""
+      puts "Invalid. Please type 1-5:".bold
+      show_beers_table_input
+    end
+  end
+  
   def show_beers_table
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     puts "Choose a range: || 1   - Most popular  ".yellow.bold
@@ -39,21 +62,7 @@ class BeerAdvocate::CLI
     puts "1. 1-50 | 2. 51-100 | 3. 101-150 | 4. 151-200 | 5. 201-250"
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
-    case take_input
-    when "1"
-      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[0..49]
-    when "2"
-      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[50..99]
-    when "3"
-      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[100..149]
-    when "4"
-      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[150..199]
-    when "5"
-      beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)[200..249]
-    else
-      puts "Please enter a number 1-5:"
-      take_input
-    end
+    show_beers_table_input
     
     green_beer = "Name".green.bold
     blue_brewery = "Brewery".light_blue.bold
@@ -67,7 +76,7 @@ class BeerAdvocate::CLI
     puts complete_beer
     puts " "
     puts " "
-    beers.each do |beer|
+    @beers.each do |beer|
       green_beer1 = "#{beer[:name]}".green.bold
       blue_brewery1 = "#{beer[:brewery]}".light_blue.bold
       abv1 = " | #{beer[:abv]} | "
@@ -85,13 +94,15 @@ class BeerAdvocate::CLI
     
   
   def show_beer(beer)
-    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-    find_beer = beers.find do |listed_beer|
+    find_beer = @beer_list.find do |listed_beer|
       listed_beer[:name].downcase == beer.downcase
     end
     if find_beer == nil
-      exit
+      puts ""
+      puts "Invalid. Please type the beer exactly as it appears in the beer list:".bold
+      show_beer(take_input)
     end
+    
     beer_page_details = BeerAdvocate::Scraper.scrape_name_page(find_beer[:name_url])
     
     puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
@@ -122,28 +133,33 @@ class BeerAdvocate::CLI
   end
   
   def show_styles_list
-    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-    styles = beers.collect do |beer|
+    @styles = @beer_list.collect do |beer|
       beer[:style]
     end
-    styles.uniq!
-    styles.sort!
+    @styles.uniq!
+    @styles.sort!
     
     puts "- - - - - - - - - - - - - - - - -".light_blue
     puts "Type a style number:".yellow.bold
     puts " "
-    styles.each do |style|
+    @styles.each do |style|
       puts "#{styles.index(style) + 1}. #{style}"
     end
     puts " "
     puts "Type a style number:".yellow.bold
     puts "- - - - - - - - - - - - - - - - -".light_blue
     
+    show_styles_list_input
+  end
+  
+  def show_styles_list_input
     numerized_input = take_input.to_i
-    if numerized_input == 0
-      exit
-    else 
-      show_style(styles[numerized_input - 1])
+    if numerized_input.between?(1, @styles.length)
+      show_style(@styles[numerized_input - 1])
+    else
+      puts ""
+      puts "Invalid. Please type a style number:".bold
+      show_styles_list_input
     end
   end
   
@@ -210,13 +226,16 @@ class BeerAdvocate::CLI
   end
   
   def show_brewery(brewery)
-    beers = BeerAdvocate::Beer.find_or_create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
-    find_brewery = beers.find do |listed_beer|
+    find_brewery = @beer_list.find do |listed_beer|
       listed_beer[:brewery].downcase == brewery.downcase
     end
+    
     if find_brewery == nil
-      exit
+      puts ""
+      puts "Invalid. Please type the brewery exactly as it appears in the beer list:".bold
+      show_brewery(take_input)
     end
+    
     brewery_page_details = BeerAdvocate::Scraper.scrape_brewery_page(find_brewery[:brewery_url])
     
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
@@ -236,6 +255,7 @@ class BeerAdvocate::CLI
     case take_input
     when "1"
       beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
+      binding.pry
       
       green_beer = "Name".green.bold
       interlude = " | "
@@ -280,6 +300,10 @@ class BeerAdvocate::CLI
   
   def run
     welcome
+    welcome_input
+  end
+  
+  def welcome_input
     case take_input
     when "1"
       beer_table_interaction
@@ -294,14 +318,9 @@ class BeerAdvocate::CLI
       puts "Type brewery name:".bold
       show_brewery(take_input)
     else
-      puts "Type 1-4:"
-      run
-    end
-  end
-  
-  class InputError < StandardError
-    def message
-      "Sorry, input invalid."
+      puts ""
+      puts "Invalid. Please type 1-4:".bold
+      welcome_input
     end
   end
 end

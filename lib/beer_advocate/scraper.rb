@@ -73,6 +73,7 @@ class BeerAdvocate::Scraper
   end
   
   def self.scrape_style_page(style_url)
+    puts "SCRAPING #{style_url} ************"
     html = open(style_url)
     style_page = Nokogiri::HTML(html)
     
