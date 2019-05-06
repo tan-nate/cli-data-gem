@@ -1,4 +1,4 @@
-# Cli::Data::Gem
+# Beer Advocate CLI Gem
 
 This gem enables you to browse the Beer Advocate website (beeradvocate.com) in a CLI. 
 
