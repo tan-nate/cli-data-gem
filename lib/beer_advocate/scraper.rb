@@ -1,6 +1,16 @@
 class BeerAdvocate::Scraper
   BEER_ADVOCATE_URL = "https://www.beeradvocate.com/lists/popular/"
 
+  @@scraped_urls = []
+  
+  def self.scraped_urls
+    @@scraped_urls
+  end
+  
+  def self.find_url(url)
+    self.scraped_urls.find {|scraped_url| scraped_url == url}
+  end
+
   def self.scrape_list_page
     puts "SCRAPING #{BEER_ADVOCATE_URL} ************"
     
@@ -30,6 +40,7 @@ class BeerAdvocate::Scraper
 
   def self.scrape_name_page(name_url)
     puts "SCRAPING #{name_url} ************"
+    
     html = open(name_url)
     name_page = Nokogiri::HTML(html)
     
@@ -55,6 +66,7 @@ class BeerAdvocate::Scraper
   
   def self.scrape_brewery_page(brewery_url)
     puts "SCRAPING #{brewery_url} ************"
+    
     html = open(brewery_url)
     brewery_page = Nokogiri::HTML(html)
     
@@ -74,6 +86,7 @@ class BeerAdvocate::Scraper
   
   def self.scrape_style_page(style_url)
     puts "SCRAPING #{style_url} ************"
+    
     html = open(style_url)
     style_page = Nokogiri::HTML(html)
     

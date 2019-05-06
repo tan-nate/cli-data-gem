@@ -5,7 +5,7 @@ require_relative './scraper.rb'
 require_relative './brewery.rb'
 
 class BeerAdvocate::CLI
-  attr_accessor :beer_list, :beers, :styles, :reviews, :find_beer
+  attr_accessor :beer_list, :beers, :styles, :reviews, :find_beer, :find_brewery
   
   def initialize
     @beer_list = BeerAdvocate::Beer.create_from_collection(BeerAdvocate::Scraper.scrape_list_page)
@@ -241,8 +241,52 @@ class BeerAdvocate::CLI
     end
   end
   
+  def show_brewery_input
+    case take_input
+    when "1"
+      beers = BeerAdvocate::Brewery.find_brewery(@find_brewery[:brewery]).beers
+      #binding.pry
+      green_beer = "Name".green.bold
+      interlude = " | "
+      bold_style = "Style".red.bold
+      abv = "ABV".bold
+      score = "Score".yellow.bold
+      complete_beer = green_beer << interlude << bold_style << interlude << abv << interlude << score
+      
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts "#{find_brewery[:brewery]}".bold
+      puts " "
+      puts "Type a beer name for more info.".yellow.bold
+      puts complete_beer
+      puts " "
+      
+      colored_beers = beers.collect do |beer|
+        green_beer1 = "#{beer.name}".green.bold
+        interlude1 = " | "
+        bold_style1 = "#{beer.style.name}".red.bold
+        abv1 = "#{beer.abv}".bold
+        score1 = "#{beer.score}".yellow.bold
+        complete_beer1 = green_beer1 << interlude1 << bold_style1 << interlude1 << abv1 << interlude1 << score1
+        complete_beer1
+      end
+      
+      puts colored_beers
+      puts " "
+      puts complete_beer
+      puts "Type a beer name for more info.".yellow.bold
+      puts " "
+      puts "#{find_brewery[:brewery]}".bold
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      show_beer(take_input)
+    else
+      puts ""
+      puts "Type 1:".bold
+      show_brewery_input
+    end
+  end
+  
   def show_brewery(brewery)
-    find_brewery = @beer_list.find do |listed_beer|
+    @find_brewery = @beer_list.find do |listed_beer|
       listed_beer[:brewery].downcase == brewery.downcase
     end
     
@@ -268,43 +312,7 @@ class BeerAdvocate::CLI
     puts "Press '1' for a list of beers from this brewery.".yellow.bold
     puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
     
-    case take_input
-    when "1"
-      beers = BeerAdvocate::Brewery.find_brewery(find_brewery[:brewery]).beers
-
-      green_beer = "Name".green.bold
-      interlude = " | "
-      bold_style = "Style".red.bold
-      abv = "ABV".bold
-      score = "Score".yellow.bold
-      complete_beer = green_beer << interlude << bold_style << interlude << abv << interlude << score
-      
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      puts "#{find_brewery[:brewery]}".bold
-      puts " "
-      puts "Type a beer name for more info.".yellow.bold
-      puts complete_beer
-      puts " "
-      
-      beers.collect! do |beer|
-        green_beer1 = "#{beer.name}".green.bold
-        interlude1 = " | "
-        bold_style1 = "#{beer.style.name}".red.bold
-        abv1 = "#{beer.abv}".bold
-        score1 = "#{beer.score}".yellow.bold
-        complete_beer1 = green_beer1 << interlude1 << bold_style1 << interlude1 << abv1 << interlude1 << score1
-        complete_beer1
-      end
-      
-      puts beers
-      puts " "
-      puts complete_beer
-      puts "Type a beer name for more info.".yellow.bold
-      puts " "
-      puts "#{find_brewery[:brewery]}".bold
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
-      show_beer(take_input)
-    end
+    show_brewery_input
   end
   
   def beer_table_interaction
