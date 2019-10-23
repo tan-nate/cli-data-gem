@@ -2,7 +2,7 @@
 
 This ruby gem enables you to browse the Beer Advocate website (beeradvocate.com) in a CLI. 
 
-## Installation
+## Usage
 
 Add this line to your application's Gemfile:
 
