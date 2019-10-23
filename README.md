@@ -1,6 +1,6 @@
 # Beer Advocate CLI Gem
 
-This gem enables you to browse the Beer Advocate website (beeradvocate.com) in a CLI. 
+This ruby gem enables you to browse the Beer Advocate website (beeradvocate.com) in a CLI. 
 
 ## Installation
 
@@ -17,24 +17,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install beer-advocate-cli-gem
-
-## Usage
-
-* ~ Mac Terminal installation not working...any input highly appreciated... ~
-
-If using the Mac Terminal app, ensure Xcode is installed:
-
-xcode-select --install
-
-Then type:
-
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-brew install ruby
-
-sudo gem install beer-advocate-cli -n /usr/local/bin
-
-* ~ ~ 
 
 To run the CLI, simply type 'beer-advocate'. 
 
