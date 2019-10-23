@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'colorize'
+require 'pry'
 
 require_relative './beer_advocate/version'
 

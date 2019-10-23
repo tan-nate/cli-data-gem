@@ -18,9 +18,9 @@ class BeerAdvocate::CLI
   def take_input
     input = gets.strip.downcase
     if input == "exit"
-      puts " - - - - - - - - - - -".light_blue
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       puts "Goodbye!"
-      puts " - - - - - - - - - - -".light_blue
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       exit
     elsif input == "menu"
       run
@@ -153,7 +153,7 @@ class BeerAdvocate::CLI
     @styles.uniq!
     @styles.sort!
     
-    puts "- - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     puts "Type a style number:".yellow.bold
     puts " "
     @styles.each do |style|
@@ -161,7 +161,7 @@ class BeerAdvocate::CLI
     end
     puts " "
     puts "Type a style number:".yellow.bold
-    puts "- - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
     show_styles_list_input
   end
@@ -189,7 +189,7 @@ class BeerAdvocate::CLI
       score = "Score".yellow.bold
       complete_beer = green_beer << interlude << bold_brewery << interlude << abv << interlude << score
       
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       puts "#{find_style[:style]}".bold
       puts " "
       puts "Type a beer name for more info.".yellow.bold
@@ -232,7 +232,7 @@ class BeerAdvocate::CLI
       style_page_details = BeerAdvocate::Scraper.find_url_details(find_style[:style_url])
     end
     
-    puts "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     puts "#{find_style[:style]}".yellow.bold
     puts " "
     puts "#{style_page_details[:description]}"
@@ -242,7 +242,7 @@ class BeerAdvocate::CLI
     puts "#{style_page_details[:glassware]}".bold
     puts " "
     puts "Press '1' for a list of beers of this style.".yellow.bold
-    puts "- - - - - - - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
     show_style_input
   end
@@ -258,7 +258,7 @@ class BeerAdvocate::CLI
       score = "Score".yellow.bold
       complete_beer = green_beer << interlude << bold_style << interlude << abv << interlude << score
       
-      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
+      puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
       puts "#{find_brewery[:brewery]}".bold
       puts " "
       puts "Type a beer name for more info.".yellow.bold
@@ -307,7 +307,7 @@ class BeerAdvocate::CLI
       brewery_page_details = BeerAdvocate::Scraper.find_url_details(find_brewery[:brewery_url])
     end
     
-    puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     puts "#{find_brewery[:brewery]}".yellow.bold
     puts " "
     puts "#{brewery_page_details[:type]}"
@@ -319,7 +319,7 @@ class BeerAdvocate::CLI
     puts "#{brewery_page_details[:website]}"
     puts " "
     puts "Press '1' for a list of beers from this brewery.".yellow.bold
-    puts "- - - - - - - - - - - - - - - - - - - - - - - - - -".light_blue
+    puts " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ".light_blue
     
     show_brewery_input
   end

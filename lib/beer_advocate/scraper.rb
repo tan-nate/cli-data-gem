@@ -21,7 +21,7 @@ class BeerAdvocate::Scraper
   end
 
   def self.scrape_list_page
-    puts "SCRAPING #{BEER_ADVOCATE_URL} ************"
+    #puts "SCRAPING #{BEER_ADVOCATE_URL}"
     
     html = open(BEER_ADVOCATE_URL)
     beer_list_page = Nokogiri::HTML(html)
@@ -40,24 +40,26 @@ class BeerAdvocate::Scraper
       beer_hash[:score] = beer.css("td")[3].text
       beer_hash[:name_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[0]["href"]}?sort=topr&start=0"
       beer_hash[:brewery_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[1]["href"]}"
-      beer_hash[:style_url] = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[2]["href"]}"
+      wrong_style_url_with_right_style_id = "http://www.beeradvocate.com#{beer.css("td")[1].css("a")[2]["href"]}"
+      style_id = wrong_style_url_with_right_style_id.scan(/\d+/)[0]
+      beer_hash[:style_url] = "http://www.beeradvocate.com/beer/styles/#{style_id}"
       beer_hashes << beer_hash
+      #binding.pry
     end
     
     beer_hashes
   end
 
   def self.scrape_name_page(name_url)
-    puts "SCRAPING #{name_url} ************"
+    #puts "SCRAPING #{name_url}"
     
     html = open(name_url)
     name_page = Nokogiri::HTML(html)
     
-    info_box = name_page.css("div#info_box.break")
-    reviews = name_page.css("div#rating_fullview_content_2")
-    
+    info_box = name_page.css("div#info_box")
+    reviews = name_page.css("div#rating_fullview_container")
+    #binding.pry
     name_hash = {}
-    name_hash[:description] = info_box.text.split("\n\n")[7..-1].join("\n\n").strip
     name_hash[:pdev] = name_page.css("span.ba-pdev").text.strip
     
     name_hash[:top_reviews] = []
@@ -78,7 +80,7 @@ class BeerAdvocate::Scraper
   end
   
   def self.scrape_brewery_page(brewery_url)
-    puts "SCRAPING #{brewery_url} ************"
+    #puts "SCRAPING #{brewery_url}"
     
     html = open(brewery_url)
     brewery_page = Nokogiri::HTML(html)
@@ -86,13 +88,17 @@ class BeerAdvocate::Scraper
     info_box = brewery_page.css("div#info_box.break")
     info_box.css("br").each{|br| br.replace("\n")}
     info_array = info_box.text.split("\n\n\n\n")
-    jumbled_phone_number = info_array[2].split("\n\n")[1]
-    
+    jumbled_phone_number = info_array[1].split("\n\n")[1]
+
+    #binding.pry
+
     brewery_hash = {}
-    brewery_hash[:type] = info_array[1]
-    brewery_hash[:address] = info_array[2].split("\n\n")[0]
+    brewery_hash[:type] = info_array[0].strip
+    brewery_hash[:address] = info_array[1].split("\n\n")[0]
     brewery_hash[:phone_number] = jumbled_phone_number.split("|")[0].strip
     brewery_hash[:website] = jumbled_phone_number.split("\n")[1].strip
+
+    #binding.pry
     
     scraped_url_hash = {}
     scraped_url_hash[brewery_url.to_sym] = brewery_hash
@@ -102,7 +108,7 @@ class BeerAdvocate::Scraper
   end
   
   def self.scrape_style_page(style_url)
-    puts "SCRAPING #{style_url} ************"
+    #puts "SCRAPING #{style_url}"
     
     html = open(style_url)
     style_page = Nokogiri::HTML(html)
