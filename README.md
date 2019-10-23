@@ -7,7 +7,7 @@ This ruby gem enables you to browse the Beer Advocate website (beeradvocate.com)
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'beer-advocate-cli-gem'
+gem 'beer-advocate-cli'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install beer-advocate-cli-gem
+    $ gem install beer-advocate-cli
 
 To run the CLI, simply type 'beer-advocate'. 
 
