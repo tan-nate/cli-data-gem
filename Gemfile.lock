@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    beer-advocate-cli (0.2.3)
+    beer-advocate-cli (0.2.4)
       colorize (~> 0.8.1)
       nokogiri (~> 1.8)
       pry (~> 0.12.2)
