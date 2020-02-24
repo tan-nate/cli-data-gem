@@ -20,8 +20,6 @@ Or install it yourself as:
 
 To run the CLI, simply type 'beer-advocate'. 
 
-Video walkthrough: https://www.youtube.com/watch?v=0gne-y8op7k&t=2s
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment. Run `bin/beer-advocate` to run the app. 
